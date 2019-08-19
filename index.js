@@ -92,7 +92,7 @@ function packagePhobiaOnName(dependency, callback) {
 }
 
 function audit(ac) {
-    execFile('npm', ['audit', '--json'], function(err, stdout, stderr) {
+    execFile(/^win/.test(process.platform) ? 'npm.cmd' : 'npm', ['audit', '--json'], function(err, stdout, stderr) {
         // if (err) return ac(err);
         // if (stderr) return ac(new Error(stderr));
 	if (stdout == '') return ac()
@@ -107,7 +107,7 @@ function audit(ac) {
 }
 
 function outdated(ac) {
-    execFile('npm', ['outdated', '--json'], function(err, stdout, stderr) {
+    execFile(/^win/.test(process.platform) ? 'npm.cmd' : 'npm', ['outdated', '--json'], function(err, stdout, stderr) {
         // if (err) return ac(err);
         // if (stderr) return ac(new Error(stderr));
 	if (stdout == '') return ac()
