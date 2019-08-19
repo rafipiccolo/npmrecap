@@ -1,6 +1,6 @@
 {
   "name": "npmrecap",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "returns a recap of the dependencies of a package.json file by executing npm audit / npm outdated / PackagePhobia",
   "main": "index.js",
   "scripts": {
