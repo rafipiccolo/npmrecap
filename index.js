@@ -50,7 +50,9 @@ function packagePhobiaOnPackage(file, callback) {
         
         data = data.toString('utf8');
         data = JSON.parse(data);
-        async.mapLimit(Object.keys(data.dependencies), 5, function(packageName, ac) {
+
+	var dependencyNames = [...Object.keys(data.dependencies), ...Object.keys(data.devDependencies)];
+        async.mapLimit(dependencyNames, 5, function(packageName, ac) {
             packagePhobiaOnName(packageName, function(err, data) {
                 if (err) {
                     data = {name: packageName, err: err, install: {bytes: 0}};
@@ -94,7 +96,7 @@ function packagePhobiaOnName(dependency, callback) {
 function audit(ac) {
     execFile(/^win/.test(process.platform) ? 'npm.cmd' : 'npm', ['audit', '--json'], function(err, stdout, stderr) {
         // if (err) return ac(err);
-        // if (stderr) return ac(new Error(stderr));
+        if (stderr) return ac(new Error(stderr));
 	if (stdout == '') return ac()
         var json = null;
         try{
@@ -109,7 +111,7 @@ function audit(ac) {
 function outdated(ac) {
     execFile(/^win/.test(process.platform) ? 'npm.cmd' : 'npm', ['outdated', '--json'], function(err, stdout, stderr) {
         // if (err) return ac(err);
-        // if (stderr) return ac(new Error(stderr));
+        if (stderr) return ac(new Error(stderr));
 	if (stdout == '') return ac()
 
         var json = null;
