@@ -193,7 +193,7 @@ function reporterTEXT(data, callback) {
             packageName+'',
             dependency.size ? prettyBytes(dependency.size) : '-',
             dependency.vulnerabilities ? dependency.vulnerabilities.length : '',
-            dependency.outdated ? dependency.outdated.current+'>'+ependency.outdated.latest : ''
+            dependency.outdated ? dependency.outdated.current+'>'+dependency.outdated.latest : ''
         ]);
     }
     
