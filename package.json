@@ -1,12 +1,12 @@
 {
   "name": "npmrecap",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "returns a recap of the dependencies of a package.json file by executing npm audit / npm outdated / PackagePhobia",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "",
+  "author": "Raphael Piccolo <rafi.piccolo@gmail.com>",
   "license": "ISC",
   "dependencies": {
     "async": "^3.1.0",
@@ -17,5 +17,10 @@
   },
   "bin": {
     "npmrecap": "index.js"
+  },
+  "homepage": "https://github.com/rafipiccolo/npmrecap",
+  "repository": {
+    "type" : "git",
+    "url" : "https://github.com/rafipiccolo/npmrecap"
   }
 }
