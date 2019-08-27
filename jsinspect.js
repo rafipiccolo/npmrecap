@@ -27,7 +27,7 @@
 var execFile = require('child_process').execFile;
 
 module.exports = function(dir, ac) {
-    execFile(/^win/.test(process.platform) ? 'npx.cmd' : 'npx', ['-q', 'jsinspect', '--reporter', 'json', '--ignore', 'web/', dir], function(err, stdout, stderr) {
+    execFile(/^win/.test(process.platform) ? 'npx.cmd' : 'npx', ['-q', 'jsinspect', '--reporter', 'json', '--ignore', 'web/|doc/', dir], function(err, stdout, stderr) {
         // if (err) return ac(err);
         if (stderr) return ac(new Error(stderr));
         if (stdout == '') return ac()

@@ -1,6 +1,6 @@
 {
   "name": "npmrecap",
-  "version": "1.2.1",
+  "version": "1.2.2",
   "description": "returns a recap of the dependencies of a package.json file by executing npm audit / npm outdated / PackagePhobia / api.npmjs.org / analysing require tree / jsinspect",
   "main": "index.js",
   "scripts": {
