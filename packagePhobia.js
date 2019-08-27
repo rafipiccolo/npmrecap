@@ -38,7 +38,7 @@ function packagePhobiaOnPackage(file, callback) {
         data = JSON.parse(data);
 
         var dependencyNames = Object.keys(data.dependencies);
-        if (data.devDependencies) dependencyNames = [...dependencyNames, ...Object.keys(data.devDependencie)];
+        if (data.devDependencies) dependencyNames = [...dependencyNames, ...Object.keys(data.devDependencies)];
         async.mapLimit(dependencyNames, 5, function(packageName, ac) {
             packagePhobiaOnName(packageName, function(err, data) {
                 if (err) {

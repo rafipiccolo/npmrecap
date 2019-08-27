@@ -1,109 +1,26 @@
 #!/usr/bin/env node
 
-// 
-// exemple of output of this program :
-// ===================================
-// {
-//     "dependencies": {
-//         "async": {
-//             "downloads": 122761424,
-//             "size": 694474
-//         },
-//         "benchmark": {
-//             "downloads": 122761424,
-//             "size": 1539121
-//         },
-//         "cors": {
-//             "downloads": 122761424,
-//             "size": 37071
-//         },
-//         "deep-equal": {
-//             "downloads": 122761424,
-//             "size": 10582
-//         },
-//         "express": {
-//             "downloads": 122761424,
-//             "size": 1684362,
-//             "vulnerabilities": [
-//                 {
-//                     "overview": "Affected versions of `negotiator` are vulnerable to regular expression denial of service attacks, which trigger upon parsing a specially crafted `Accept-Language` header value.\n\n",
-//                     "recommendation": "Update to version 0.6.1 or later.",
-//                     "references": "",
-//                     "path": "express>connect>compression>accepts>negotiator"
-//                 },
-//             ],
-//             "outdated": {
-//                 "current": "3.21.2",
-//                 "wanted": "3.21.2",
-//                 "latest": "4.17.1",
-//                 "location": "node_modules/express"
-//             }
-//         },
-//         "helmet": {
-//             "downloads": 122761424,
-//             "size": 230819
-//         },
-//         "moment": {
-//             "downloads": 122761424,
-//             "size": 2792717
-//         },
-//         "nconf": {
-//             "downloads": 122761424,
-//             "size": 578668
-//         },
-//         "undefined": {
-//             "downloads": 122761424,
-//             "size": {}
-//         },
-//         "request": {
-//             "downloads": 122761424,
-//             "size": 4680047
-//         },
-//         "winston": {
-//             "downloads": 122761424,
-//             "size": 3520213
-//         },
-//         "winston-elasticsearch": {
-//             "downloads": 122761424,
-//             "size": 8640738
-//         },
-//         "yargs": {
-//             "downloads": 122761424,
-//             "size": 512825
-//         },
-//         "eslint": {
-//             "downloads": 122761424,
-//             "outdated": {
-//                 "current": "6.1.0",
-//                 "wanted": "6.2.0",
-//                 "latest": "6.2.0",
-//                 "location": "node_modules/eslint"
-//             },
-//         }
-//     },
-//     "size": 24921637,
-//     "audit": 1,
-//     "outdated": 2,
-//     "downloads": "-",
-// }
-// 
-
-
+var fs = require('fs');
+var downloads = require('./downloads');
 var async = require('async');
 const humanFormat = require('human-format');
 var packagePhobia = require('./packagePhobia.js');
 var audit = require('./audit.js');
 var outdated = require('./outdated.js');
-var downloads = require('./downloads.js');
-
+var requireTree = require('./requireTree.js');
+var jsinspect = require('./jsinspect.js');
 
 // parse parameters and launch cli functions
 const argv = require('yargs')
     .help('help')
     .option('reporter', {
         describe: 'choose a format to display result',
-        choices: ['json', 'text'],
+        choices: ['json', 'text', 'html'],
         default: 'text'
+    })
+    .option('outputdir', {
+        describe: 'select output directory when choosing html reporter',
+        default: 'npmrecap'
     })
     .argv;
 
@@ -120,22 +37,32 @@ async.autoInject({
     downloads: function(ac) {
         downloads('./package.json', ac);
     },
-    reporter: function(packagePhobia, audit, outdated, downloads, ac) {
-        var data = mergeData(packagePhobia, audit, outdated, downloads);
+    jsinspect: function(ac) {
+        jsinspect('.', ac);
+    },
+    requireTree: function(ac) {
+        var p = JSON.parse(fs.readFileSync('./package.json'))
+        if (!p.main) return ac();
+
+        requireTree.requireTree('./'+p.main, ac);
+    },
+    reporter: function (packagePhobia, audit, outdated, downloads, requireTree, jsinspect, ac) {
+        var data = mergeData(packagePhobia, audit, outdated, downloads, requireTree, jsinspect);
 
         if (argv.reporter == 'json') return reporterJSON(data, ac);
         if (argv.reporter == 'text') return reporterTEXT(data, ac);
+        if (argv.reporter == 'html') return reporterHTML(data, argv.outputdir, ac);
         
         return ac(new Error('unknown reporter, please use json or html'));
     }
 }, function(err, data){
     if (err) return console.log(err);
 
-    console.log(data.reporter);
+    if (data.reporter) console.log(data.reporter);
 })
 
 
-function mergeData(packagePhobia, audit, outdated, downloads) {
+function mergeData(packagePhobia, audit, outdated, downloads, requireTree, jsinspect) {
     var data = {};
 
     data.dependencies = {};
@@ -185,7 +112,57 @@ function mergeData(packagePhobia, audit, outdated, downloads) {
             data.dependencies[packageName].downloads = downloads.dependencies[packageName].downloads;
         })
     }
+
+    if (requireTree)
+        data.requireTree = requireTree;
+
+    data.jsinspectChord = [];
+    if (jsinspect) {
+        data.jsinspect = jsinspect;
+        var tmp = [];
+        jsinspect.forEach((function(line) {
+            var filtered = tmp.filter((j) => j.from == line.instances[0].path && j.to == line.instances[1].path);
+
+            if (filtered.length)
+                filtered[0].value++;
+            else
+                tmp.push({
+                    from: line.instances[0].path,
+                    to: line.instances[1].path,
+                    value: 1,
+                })
+        }))
+        
+        data.jsinspectChord = tmp;
+    }
     
+    var dependencyTreemap = [];
+    for (var i in data.dependencies)
+        dependencyTreemap.push({
+            name: i,
+            children: [
+                {
+                    name: i,
+                    value: data.dependencies[i].size,
+                }
+            ]
+        });
+    data.dependencyTreemap = dependencyTreemap;
+    
+    function flatten(tree, flat) {
+        for (var i in tree) {
+            for (var j in tree[i]) {
+                flat.push({ from: i, to: j, value: 1 })
+            }
+
+            flatten(tree[i], flat);
+        }
+    }
+    var flat = [];
+    flatten(data.requireTree, flat);
+    data.dependencyChord = flat
+    data.dependencyChordWithoutLibs = flat.filter((x) => x.to.endsWith('.js'))
+
     return data;
 }
 
@@ -204,7 +181,7 @@ function reporterTEXT(data, callback) {
 
     table.push([
         'TOTAL',
-        humanFormat(data.size, {unit: 'B'}) || '',
+        data.size ? humanFormat(data.size, {unit: 'B'}): '',
         data.audit || '',
         data.outdated || '',
         data.downloads || '',
@@ -222,5 +199,30 @@ function reporterTEXT(data, callback) {
     }
     
     s += table.toString();
+
+    s += '\n';
+    s += 'RequireTree:\n';
+    s += requireTree.showTree(data.requireTree);
+
+    s += '\n';
+    s += 'jsinspect ('+data.jsinspectChord.length+' duplications):\n';
+    s += data.jsinspectChord.map((x) => x.from+' & '+x.to+' : '+x.value).join('\n');
+
     callback(null, s);
+}
+
+function reporterHTML(data, outputdir, callback) {
+    fs.mkdir(outputdir, { recursive: true }, function(err) {
+        if (err) return callback(err);
+
+        fs.writeFile(outputdir + '/data.json', JSON.stringify(data, null, 4), function(err) {
+            if (err) return callback(err);
+
+            fs.copyFile(__dirname + '/index.html', outputdir + '/index.html', function(err) {
+                if (err) return callback(err);
+
+                callback();
+            });
+        });
+    });
 }

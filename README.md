@@ -1,10 +1,12 @@
 # Description
 
-This module gives a recapitulative of installed modules and simplifies auditing / updating.
+This module gives a recapitulative of installed modules for auditing / updating.
 
 Internally it executes :
 - package vulnerabilities : "npm audit --json"
 - package needing update : "npm outdated --json"
+- duplicate content : "npm run jsinspect --reporter json"
+- require tree (internal code)
 - package size : "https://packagephobia.now.sh/ on each module of your package.json"
 - package download count (popularity) : "https://api.npmjs.org/downloads/point/last-month/... on each module of your package.json"
 
@@ -28,10 +30,12 @@ If u dont want to install it you can start it directly with :
 
     $> node index.js --help
     Options:
-      --version   Show version number                                      [boolean]
-      --help      Show help                                                [boolean]
-      --reporter  choose a format to display result
-                                         [choices: "json", "text"] [default: "text"]
+    --version    Show version number                                     [boolean]
+    --help       Show help                                               [boolean]
+    --reporter   choose a format to display result
+                                [choices: "json", "text", "html"] [default: "text"]
+    --outputdir  select output directory when choosing html reporter
+                                                            [default: "npmrecap"]
 
 # Sample output
 
@@ -83,6 +87,8 @@ Alternatively u can get a json output
         },
         "size": 6022630,
         "audit": 0
+        ...
     }
     
 
+Or an html result with graphs.
