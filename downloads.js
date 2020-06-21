@@ -29,7 +29,7 @@ function downloadsOnPackage(file, callback) {
         data = data.toString('utf8');
         data = JSON.parse(data);
 
-	    var dependencyNames = Object.keys(data.dependencies);
+        var dependencyNames = Object.keys(data.dependencies);
         if (data.devDependencies) dependencyNames = [...dependencyNames, ...Object.keys(data.devDependencies)];
         async.mapLimit(dependencyNames, 5, function(packageName, ac) {
             downloadsOnName(packageName, function(err, data) {
