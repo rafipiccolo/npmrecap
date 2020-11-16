@@ -9,13 +9,13 @@
   "author": "Raphael Piccolo <rafi.piccolo@gmail.com>",
   "license": "ISC",
   "dependencies": {
-    "async": "^3.1.0",
+    "async": "^3.2.0",
     "cli-table": "^0.3.1",
-    "filing-cabinet": "^2.3.3",
+    "filing-cabinet": "^2.6.0",
     "human-format": "^0.11.0",
-    "precinct": "^6.1.2",
-    "request": "^2.88.0",
-    "yargs": "^16.0.3"
+    "precinct": "^6.3.1",
+    "request": "^2.88.2",
+    "yargs": "^16.1.1"
   },
   "bin": {
     "npmrecap": "index.js"
