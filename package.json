@@ -1,28 +1,28 @@
 {
-  "name": "npmrecap",
-  "version": "1.2.2",
-  "description": "returns a recap of the dependencies of a package.json file by executing npm audit / npm outdated / PackagePhobia / api.npmjs.org / analysing require tree / jsinspect",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "author": "Raphael Piccolo <rafi.piccolo@gmail.com>",
-  "license": "ISC",
-  "dependencies": {
-    "async": "^3.2.0",
-    "cli-table": "^0.3.4",
-    "filing-cabinet": "^2.6.0",
-    "human-format": "^0.11.0",
-    "precinct": "^6.3.1",
-    "request": "^2.88.2",
-    "yargs": "^16.2.0"
-  },
-  "bin": {
-    "npmrecap": "index.js"
-  },
-  "homepage": "https://github.com/rafipiccolo/npmrecap",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/rafipiccolo/npmrecap"
-  }
+    "name": "npmrecap",
+    "version": "1.2.2",
+    "description": "returns a recap of the dependencies of a package.json file by executing npm audit / npm outdated / PackagePhobia / api.npmjs.org / analysing require tree / jsinspect",
+    "main": "index.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "author": "Raphael Piccolo",
+    "license": "ICS",
+    "dependencies": {
+        "async": "^3.2.0",
+        "cli-table": "^0.3.4",
+        "filing-cabinet": "^2.6.0",
+        "human-format": "^0.11.0",
+        "precinct": "^6.3.1",
+        "request": "^2.88.2",
+        "yargs": "^16.2.0"
+    },
+    "bin": {
+        "npmrecap": "index.js"
+    },
+    "homepage": "https://github.com/rafipiccolo/npmrecap",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/rafipiccolo/npmrecap"
+    }
 }
