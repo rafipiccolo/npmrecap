@@ -20,9 +20,12 @@
     "bin": {
         "npmrecap": "index.js"
     },
-    "homepage": "https://github.com/rafipiccolo/npmrecap",
+    "homepage": "https://github.com/rafipiccolo/npmrecap#readme",
     "repository": {
         "type": "git",
-        "url": "https://github.com/rafipiccolo/npmrecap"
+        "url": "git+https://github.com/rafipiccolo/npmrecap.git"
+    },
+    "bugs": {
+        "url": "https://github.com/rafipiccolo/npmrecap/issues"
     }
 }
