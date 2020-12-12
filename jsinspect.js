@@ -1,4 +1,3 @@
-
 // [
 //     {
 //         "id": "2550ba437078eb6a5b2d25d3916a9d0d273dbf90",
@@ -23,20 +22,23 @@
 //     },
 // ]
 
-
 var execFile = require('child_process').execFile;
 
-module.exports = function(dir, ac) {
-    execFile(/^win/.test(process.platform) ? 'npx.cmd' : 'npx', ['-q', 'jsinspect', '--reporter', 'json', '--ignore', 'web/|doc/', dir], function(err, stdout, stderr) {
-        // if (err) return ac(err);
-        if (stderr) return ac(new Error(stderr));
-        if (stdout == '') return ac()
-        var json = null;
-        try{
-            json = JSON.parse(stdout);
-        } catch(e) {
-            return ac(e);
+module.exports = function (dir, ac) {
+    execFile(
+        /^win/.test(process.platform) ? 'npx.cmd' : 'npx',
+        ['-q', 'jsinspect', '--reporter', 'json', '--ignore', 'web/|doc/', dir],
+        function (err, stdout, stderr) {
+            // if (err) return ac(err);
+            if (stderr) return ac(new Error(stderr));
+            if (stdout == '') return ac();
+            var json = null;
+            try {
+                json = JSON.parse(stdout);
+            } catch (e) {
+                return ac(e);
+            }
+            ac(null, json);
         }
-        ac(null, json);
-    });
-}
+    );
+};

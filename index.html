@@ -1,25 +1,40 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-    
     <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-        <meta name="description" content="">
-        <meta name="author" content="">
-        <link rel="icon" href="/docs/4.0/assets/img/favicons/favicon.ico">
-        
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+        <meta name="description" content="" />
+        <meta name="author" content="" />
+        <link rel="icon" href="/docs/4.0/assets/img/favicons/favicon.ico" />
+
         <title>Npm Recap</title>
-        
-        <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-        <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+
+        <link
+            href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+            rel="stylesheet"
+            integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+            crossorigin="anonymous"
+        />
+        <link
+            href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
+            rel="stylesheet"
+            integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN"
+            crossorigin="anonymous"
+        />
     </head>
 
     <body>
-
         <nav class="navbar navbar-expand-md navbar-dark bg-dark">
             <a class="navbar-brand" href="#">Npm Recap</a>
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault"
-                aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
+            <button
+                class="navbar-toggler"
+                type="button"
+                data-toggle="collapse"
+                data-target="#navbarsExampleDefault"
+                aria-controls="navbarsExampleDefault"
+                aria-expanded="false"
+                aria-label="Toggle navigation"
+            >
                 <span class="navbar-toggler-icon"></span>
             </button>
 
@@ -37,7 +52,7 @@
         <!-- Bootstrap core JavaScript
         ================================================== -->
         <!-- Placed at the end of the document so the pages load faster -->
-        <script   src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+        <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js"></script>
 
@@ -48,10 +63,10 @@
         <script src="https://unpkg.com/react@16/umd/react.development.js" crossorigin></script>
         <script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js" crossorigin></script>
         <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
-        
+
         <script type="text/babel">
             class Treemap extends React.Component {
-                constructor(props){
+                constructor(props) {
                     super(props);
                     this.state = {};
                 }
@@ -66,15 +81,15 @@
                     chart.colors.step = 2;
 
                     // define data fields
-                    chart.dataFields.value = "value";
-                    chart.dataFields.name = "name";
-                    chart.dataFields.children = "children";
+                    chart.dataFields.value = 'value';
+                    chart.dataFields.name = 'name';
+                    chart.dataFields.children = 'children';
 
                     chart.zoomable = false;
-                    var bgColor = new am4core.InterfaceColorSet().getFor("background");
+                    var bgColor = new am4core.InterfaceColorSet().getFor('background');
 
                     // level 0 series template
-                    var level0SeriesTemplate = chart.seriesTemplates.create("0");
+                    var level0SeriesTemplate = chart.seriesTemplates.create('0');
                     var level0ColumnTemplate = level0SeriesTemplate.columns.template;
 
                     level0ColumnTemplate.column.cornerRadius(10, 10, 10, 10);
@@ -83,13 +98,13 @@
                     level0ColumnTemplate.strokeOpacity = 0;
 
                     // level 1 series template
-                    var level1SeriesTemplate = chart.seriesTemplates.create("1");
+                    var level1SeriesTemplate = chart.seriesTemplates.create('1');
                     var level1ColumnTemplate = level1SeriesTemplate.columns.template;
 
                     level1SeriesTemplate.tooltip.animationDuration = 0;
                     level1SeriesTemplate.strokeOpacity = 1;
 
-                    level1ColumnTemplate.column.cornerRadius(10, 10, 10, 10)
+                    level1ColumnTemplate.column.cornerRadius(10, 10, 10, 10);
                     level1ColumnTemplate.fillOpacity = 1;
                     level1ColumnTemplate.strokeWidth = 4;
                     level1ColumnTemplate.stroke = bgColor;
@@ -97,11 +112,10 @@
                     var bullet1 = level1SeriesTemplate.bullets.push(new am4charts.LabelBullet());
                     bullet1.locationY = 0.5;
                     bullet1.locationX = 0.5;
-                    bullet1.label.text = "{name}";
-                    bullet1.label.fill = am4core.color("#ffffff");
+                    bullet1.label.text = '{name}';
+                    bullet1.label.fill = am4core.color('#ffffff');
 
                     chart.maxLevels = 2;
-
 
                     this.chart = chart;
                 }
@@ -116,14 +130,12 @@
                     this.chart.data = this.props.data;
                 }
                 render() {
-                    return (
-                        <div id={this.props.div} style={{ width: "100%", height: "800px" }}></div>
-                    );
+                    return <div id={this.props.div} style={{ width: '100%', height: '800px' }}></div>;
                 }
             }
 
             class Chord extends React.Component {
-                constructor(props){
+                constructor(props) {
                     super(props);
                     this.state = {};
                 }
@@ -133,21 +145,20 @@
 
                     chart.data = this.props.data;
 
-                    chart.dataFields.fromName = "from";
-                    chart.dataFields.toName = "to";
-                    chart.dataFields.value = "value";
-                    chart.dataFields.color = "nodeColor";
+                    chart.dataFields.fromName = 'from';
+                    chart.dataFields.toName = 'to';
+                    chart.dataFields.value = 'value';
+                    chart.dataFields.color = 'nodeColor';
 
-                    
                     let link = chart.links.template;
-                    link.colorMode = "gradient";
+                    link.colorMode = 'gradient';
                     link.fillOpacity = 0.5;
                     // link.middleLine.strokeWidth = 3;
                     // link.middleLine.strokeOpacity = 0.4;
 
                     // make nodes draggable
                     var nodeTemplate = chart.nodes.template;
-                    nodeTemplate.readerTitle = "Click to show/hide or drag to rearrange";
+                    nodeTemplate.readerTitle = 'Click to show/hide or drag to rearrange';
                     nodeTemplate.showSystemTooltip = true;
 
                     this.chart = chart;
@@ -163,9 +174,7 @@
                     this.chart.data = this.props.data;
                 }
                 render() {
-                    return (
-                        <div id={this.props.div} style={{ width: "100%", height: "800px" }}></div>
-                    );
+                    return <div id={this.props.div} style={{ width: '100%', height: '800px' }}></div>;
                 }
             }
 
@@ -177,74 +186,89 @@
                     $.get('data.json', (data) => {
                         this.setState({
                             data: data,
-                        })
-                    })
+                        });
+                    });
                 }
-                
+
                 renderJsinspect() {
                     var lines = [];
 
                     for (var i in this.state.data.jsinspect) {
                         var line = this.state.data.jsinspect[i];
-                        lines.push(<tr key={i}>
-                            <td>{line.instances[0].path}:{line.instances[0].lines.join(',')}</td>
-                            <td>{line.instances[1].path}:{line.instances[1].lines.join(',')}</td>
-                            <td>
-                                <pre>{line.instances[0].code}</pre>
-                                <pre>{line.instances[1].code}</pre>
-                            </td>
-                        </tr>);
+                        lines.push(
+                            <tr key={i}>
+                                <td>
+                                    {line.instances[0].path}:{line.instances[0].lines.join(',')}
+                                </td>
+                                <td>
+                                    {line.instances[1].path}:{line.instances[1].lines.join(',')}
+                                </td>
+                                <td>
+                                    <pre>{line.instances[0].code}</pre>
+                                    <pre>{line.instances[1].code}</pre>
+                                </td>
+                            </tr>
+                        );
                     }
 
                     return (
                         <table className="table table-condensed table-striped">
                             <thead>
-                                <tr><td>From</td><td>To</td><td>Code</td></tr>
+                                <tr>
+                                    <td>From</td>
+                                    <td>To</td>
+                                    <td>Code</td>
+                                </tr>
                             </thead>
-                            <tbody>
-                                {lines}
-                            </tbody>
+                            <tbody>{lines}</tbody>
                         </table>
-                    )
+                    );
                 }
 
                 renderDependencies() {
                     var lines = [];
 
-                    lines.push(<tr key={'-'}>
-                        <td>{'TOTAL'}</td>
-                        <td>{this.state.data.size ? this.state.data.size : ''}</td>
-                        <td>{this.state.data.audit || ''}</td>
-                        <td>{this.state.data.outdated || ''}</td>
-                        <td>{this.state.data.downloads || ''}</td>
-                    </tr>);
-                        
+                    lines.push(
+                        <tr key={'-'}>
+                            <td>{'TOTAL'}</td>
+                            <td>{this.state.data.size ? this.state.data.size : ''}</td>
+                            <td>{this.state.data.audit || ''}</td>
+                            <td>{this.state.data.outdated || ''}</td>
+                            <td>{this.state.data.downloads || ''}</td>
+                        </tr>
+                    );
 
                     for (var i in this.state.data.dependencies) {
                         var dep = this.state.data.dependencies[i];
-                        lines.push(<tr key={i}>
-                            <td>{i}</td>
-                            <td>{dep.size}</td>
-                            <td>{dep.vulnerabilities ? dep.vulnerabilities.length : ''}</td>
-                            <td>{dep.outdated ? dep.outdated.current+'>'+dep.outdated.latest : ''}</td>
-                            <td>{dep.downloads}</td>
-                        </tr>);
+                        lines.push(
+                            <tr key={i}>
+                                <td>{i}</td>
+                                <td>{dep.size}</td>
+                                <td>{dep.vulnerabilities ? dep.vulnerabilities.length : ''}</td>
+                                <td>{dep.outdated ? dep.outdated.current + '>' + dep.outdated.latest : ''}</td>
+                                <td>{dep.downloads}</td>
+                            </tr>
+                        );
                     }
 
                     return (
                         <table className="table table-condensed table-striped">
                             <thead>
-                                <tr><td>Dependency</td><td>Size</td><td>Vulnerabilities</td><td>Outdated</td><td>Downloads</td></tr>
+                                <tr>
+                                    <td>Dependency</td>
+                                    <td>Size</td>
+                                    <td>Vulnerabilities</td>
+                                    <td>Outdated</td>
+                                    <td>Downloads</td>
+                                </tr>
                             </thead>
-                            <tbody>
-                                {lines}
-                            </tbody>
+                            <tbody>{lines}</tbody>
                         </table>
-                    )
+                    );
                 }
 
                 render() {
-                    if (!this.state.data) return (<div>Loading</div>);
+                    if (!this.state.data) return <div>Loading</div>;
 
                     return (
                         <div className="container">
@@ -259,30 +283,29 @@
                             <br />
 
                             <h2>Code duplication (JS Inspect)</h2>
-                            <p><b>{this.state.data.jsinspectChord.length}</b> possible code duplications</p>
+                            <p>
+                                <b>{this.state.data.jsinspectChord.length}</b> possible code duplications
+                            </p>
                             <Chord data={this.state.data.jsinspectChord} div="2" />
                             {this.renderJsinspect()}
                             <br />
                             <br />
 
                             <h2>Require Tree With local files only</h2>
-                            <Chord data={this.state.data.dependencyChordWithoutLibs} div="3"/>
+                            <Chord data={this.state.data.dependencyChordWithoutLibs} div="3" />
                             <br />
                             <br />
 
                             <h2>Require Tree Including packages</h2>
-                            <Chord data={this.state.data.dependencyChord} div="4"/>
+                            <Chord data={this.state.data.dependencyChord} div="4" />
                             <br />
                             <br />
-                            
                         </div>
                     );
                 }
             }
-    
-            ReactDOM.render(<App/>, document.querySelector('#root'));
-    
+
+            ReactDOM.render(<App />, document.querySelector('#root'));
         </script>
     </body>
-
 </html>

@@ -1,4 +1,4 @@
-// 
+//
 // scan output of npm audit
 //
 // exemple of json returned by npm audit
@@ -79,21 +79,21 @@
 //     },
 //     "runId": "50da113d-bac3-4587-8285-14b77a00754c"
 // }
-// 
+//
 
 var execFile = require('child_process').execFile;
 
-module.exports = function(ac) {
-    execFile(/^win/.test(process.platform) ? 'npm.cmd' : 'npm', ['audit', '--json'], function(err, stdout, stderr) {
+module.exports = function (ac) {
+    execFile(/^win/.test(process.platform) ? 'npm.cmd' : 'npm', ['audit', '--json'], function (err, stdout, stderr) {
         // if (err) return ac(err);
         if (stderr) return ac(new Error(stderr));
-	if (stdout == '') return ac()
+        if (stdout == '') return ac();
         var json = null;
-        try{
+        try {
             json = JSON.parse(stdout);
-        } catch(e) {
+        } catch (e) {
             return ac(e);
         }
         ac(null, json);
     });
-}
+};
